@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #__next {
+  height: 100%;
+}
+
+body {
+  @apply bg-cyber-bg text-gray-100;
+}
+
+.panel {
+  @apply bg-cyber-panel rounded-lg border border-gray-800 shadow;
+}
+
+.btn {
+  @apply inline-flex items-center px-3 py-2 rounded-md font-medium transition;
+}
+
+.btn-primary {
+  @apply btn bg-cyber-accent text-black hover:bg-cyber-accent/80;
+}
+
+.btn-secondary {
+  @apply btn bg-gray-800 text-gray-100 hover:bg-gray-700;
+}
+
+.tag {
+  @apply inline-flex items-center px-2 py-1 text-xs rounded bg-gray-800 text-gray-200 mr-1 mb-1;
+}
+
+/* Section color coding for core parts (uses remark-slug ids) */
+h2#temel-komutlar-ve-sozdizimi { border-left: 4px solid #60a5fa; padding-left: 0.5rem; }
+h2#sik-kullanilan-ornekler-ve-kullanim-durumlari { border-left: 4px solid #34d399; padding-left: 0.5rem; }
+h2#ileri-duzey-teknikler-ve-ipuclari { border-left: 4px solid #f59e0b; padding-left: 0.5rem; }
+h2#sorun-giderme-rehberi-ve-hata-cozumleri { border-left: 4px solid #ef4444; padding-left: 0.5rem; }
+
+/* Mermaid diagrams responsive */
+.mermaid-diagram svg { max-width: 100%; height: auto; }

@@ -1,0 +1,32 @@
+services:
+  app:
+    build: .
+    container_name: cybersheet-web
+    environment:
+      NODE_ENV: production
+      NEXT_TELEMETRY_DISABLED: "1"
+      PORT: 3311
+      # App, lib/dbConnect.js içinde öncelikle MONGODB_URI'yi kullanıyor.
+      # Compose içinde dahili mongo servisine bağlanmak için URI veriyoruz.
+      MONGODB_URI: mongodb://mongo:27017/cybersheet
+    ports:
+      - "3311:3311"
+    depends_on:
+      - mongo
+    restart: unless-stopped
+    # Gizli/opsiyonel env değerlerini .env.local içinden al (varsa)
+    env_file:
+      - .env.local
+
+  mongo:
+    image: mongo:6
+    container_name: cybersheet-mongo
+    ports:
+      - "33017:27017"
+    volumes:
+      - ./mongo-data:/data/db
+    restart: unless-stopped
+
+networks:
+  default:
+    name: cybersheet-net

@@ -1,0 +1,15 @@
+# Ignore local files that should not be copied into Docker context
+node_modules
+.next
+.git
+.gitignore
+npm-debug.log*
+yarn.lock
+pnpm-lock.yaml
+mongo-data
+
+# IDE and OS files
+.DS_Store
+
+# Local env files (pass at runtime instead)
+.env*

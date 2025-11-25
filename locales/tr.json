@@ -1,0 +1,82 @@
+{
+  "header": {
+    "title": "CyberSec Cheatsheet",
+    "subtitle": "Organize your security docs",
+    "categories": "Kategoriler",
+    "login": "Giriş Yap",
+    "logout": "Çıkış Yap",
+    "lightMode": "Aydınlık Mod",
+    "darkMode": "Karanlık Mod"
+  },
+  "sidebar": {
+    "categories": "Kategoriler",
+    "manage": "Yönet",
+    "new": "Yeni",
+    "all": "Tümü"
+  },
+  "search": {
+    "searchPlaceholder": "Başlık, etiket, içerik ara",
+    "filterByTag": "Etikete göre filtrele",
+    "search": "Ara",
+    "newCheatsheet": "Yeni Cheatsheet",
+    "loading": "Yükleniyor...",
+    "noResults": "Cheatsheet bulunamadı. Yeni bir tane oluşturmayı deneyin."
+  },
+  "cheatsheet": {
+    "exportMD": "MD İndir",
+    "exportPDF": "PDF İndir",
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "deleteConfirm": "Bu cheatsheet'i silmek istediğinizden emin misiniz?",
+    "updated": "Güncellendi",
+    "links": "Bağlantılar",
+    "notFound": "Bulunamadı",
+    "copy": "Kopyala",
+    "copied": "Kopyalandı!"
+  },
+  "categories": {
+    "manage": "Kategorileri Yönet",
+    "name": "İsim",
+    "description": "Açıklama",
+    "addCategory": "Kategori Ekle",
+    "existing": "Mevcut Kategoriler",
+    "noCategories": "Henüz kategori yok.",
+    "deleteConfirm": "Bu kategoriyi silmek istediğinizden emin misiniz?"
+  },
+  "common": {
+    "loading": "Yükleniyor...",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "add": "Ekle"
+  },
+  "newCheatsheet": {
+    "title": "Yeni Cheatsheet",
+    "titlePlaceholder": "Başlık",
+    "selectCategory": "Kategori Seçin",
+    "tagsPlaceholder": "Etiketler (virgülle ayrılmış)",
+    "linksPlaceholder": "Bağlantılar (virgülle ayrılmış URL'ler)",
+    "templateLabel": "Şablon ekle",
+    "selectTemplate": "Şablon seçin",
+    "addTemplate": "Ekle (Sonuna)",
+    "replaceTemplate": "Değiştir (Tamamını)",
+    "saving": "Kaydediliyor...",
+    "saveCheatsheet": "Cheatsheet Kaydet"
+  },
+  "editCheatsheet": {
+    "title": "Cheatsheet Düzenle",
+    "saveChanges": "Değişiklikleri Kaydet"
+  },
+  "login": {
+    "title": "Giriş Yap",
+    "username": "Kullanıcı Adı",
+    "password": "Şifre",
+    "loggingIn": "Giriş yapılıyor...",
+    "login": "Giriş Yap",
+    "logout": "Çıkış Yap",
+    "authDisabled": "Kimlik doğrulama devre dışı. Giriş yapmadan uygulamayı kullanabilirsiniz.",
+    "loginFailed": "Giriş başarısız",
+    "loggedOut": "Çıkış yapıldı. Token temizlendi."
+  }
+}

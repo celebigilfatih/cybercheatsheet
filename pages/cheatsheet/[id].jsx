@@ -4,12 +4,14 @@ import remarkGfm from 'remark-gfm'
 import remarkSlug from 'remark-slug'
 import remarkToc from 'remark-toc'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import oneDark from 'react-syntax-highlighter/dist/cjs/styles/prism/one-dark'
+import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import Mermaid from '../../components/Mermaid'
+import { useLanguage } from '../../lib/LanguageContext'
 
 export default function CheatsheetDetail() {
   const [sheet, setSheet] = useState(null)
   const [loading, setLoading] = useState(true)
+  const { t, language } = useLanguage()
 
   useEffect(() => {
     const id = window.location.pathname.split('/').pop()
@@ -28,23 +30,23 @@ export default function CheatsheetDetail() {
     blocks.forEach((pre) => {
       if (pre.querySelector('.copy-btn')) return
       const btn = document.createElement('button')
-      btn.textContent = 'Copy'
+      btn.textContent = t('detail.copy')
       btn.className = 'copy-btn btn-secondary absolute right-2 top-2 text-xs'
       btn.addEventListener('click', () => {
         const code = pre.querySelector('code')
         const text = code ? code.textContent : ''
         navigator.clipboard.writeText(text || '')
-        btn.textContent = 'Copied!'
-        setTimeout(() => (btn.textContent = 'Copy'), 1200)
+        btn.textContent = t('detail.copied')
+        setTimeout(() => (btn.textContent = t('detail.copy')), 1200)
       })
       pre.style.position = 'relative'
       pre.appendChild(btn)
     })
-  }, [sheet])
+  }, [sheet, t])
 
   const remove = async () => {
     if (!sheet) return
-    if (!confirm('Delete this cheatsheet?')) return
+    if (!confirm(t('detail.deleteConfirm'))) return
     const { authFetch } = await import('../../lib/client')
     const res = await authFetch(`/api/cheatsheets/${sheet._id}`, { method: 'DELETE' })
     if (res.ok) {
@@ -56,10 +58,12 @@ export default function CheatsheetDetail() {
   }
 
   const exportMD = () => {
-    const blob = new Blob([sheet?.description || ''], { type: 'text/markdown;charset=utf-8' })
+    const content = sheet?.description?.[language] || sheet?.description?.tr || sheet?.description || ''
+    const blob = new Blob([content], { type: 'text/markdown;charset=utf-8' })
     const a = document.createElement('a')
     a.href = URL.createObjectURL(blob)
-    a.download = `${sheet.title.replace(/\s+/g, '-')}.md`
+    const title = sheet?.title?.[language] || sheet?.title?.tr || sheet?.title || 'cheatsheet'
+    a.download = `${title.replace(/\s+/g, '-')}.md`
     a.click()
   }
 
@@ -76,18 +80,18 @@ export default function CheatsheetDetail() {
     pdf.save(`${sheet.title.replace(/\s+/g, '-')}.pdf`)
   }
 
-  if (loading) return <main className="p-6">Loading...</main>
-  if (!sheet) return <main className="p-6">Not found</main>
+  if (loading) return <main className="p-6">{t('detail.loading')}</main>
+  if (!sheet) return <main className="p-6">{t('detail.notFound')}</main>
 
   return (
     <main className="mx-auto max-w-5xl p-6 space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">{sheet.title}</h1>
+        <h1 className="text-2xl font-semibold">{sheet.title?.[language] || sheet.title?.tr || sheet.title}</h1>
         <div className="flex gap-2">
-          <button onClick={exportMD} className="btn-secondary">Export MD</button>
-          <button onClick={exportPDF} className="btn-primary">Export PDF</button>
-          <a href={`/cheatsheet/${sheet._id}/edit`} className="btn-secondary">Edit</a>
-          <button onClick={remove} className="btn-secondary">Delete</button>
+          <button onClick={exportMD} className="btn-secondary">{t('detail.exportMD')}</button>
+          <button onClick={exportPDF} className="btn-primary">{t('detail.exportPDF')}</button>
+          <a href={`/cheatsheet/${sheet._id}/edit`} className="btn-secondary">{t('detail.edit')}</a>
+          <button onClick={remove} className="btn-secondary">{t('detail.delete')}</button>
         </div>
       </div>
       <div className="mt-2">
@@ -115,13 +119,13 @@ export default function CheatsheetDetail() {
               }
             }}
           >
-            {sheet.description || ''}
+            {sheet.description?.[language] || sheet.description?.tr || sheet.description || ''}
           </ReactMarkdown>
         )}
       </div>
       {sheet.links?.length > 0 && (
         <div className="panel p-4">
-          <h2 className="text-sm font-semibold mb-2">Links</h2>
+          <h2 className="text-sm font-semibold mb-2">{t('detail.links')}</h2>
           <ul className="list-disc ml-6 text-sm">
             {sheet.links.map((l, idx) => (
               <li key={idx}><a className="text-cyber-accent hover:underline" href={l} target="_blank" rel="noreferrer noopener">{l}</a></li>

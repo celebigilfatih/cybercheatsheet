@@ -26,10 +26,18 @@ export default async function handler(req, res) {
     if (!requireAuth(req, res)) return
     const { title, description, tags = [], links = [], category } = req.body || {}
     if (!title || !category) return res.status(400).json({ error: 'Title and category are required' })
-    const sanitized = sanitizeHtml(description || '', {
-      allowedTags: false,
-      allowedAttributes: false
-    })
+    
+    // Handle bilingual description {tr: "...", en: "..."} or string
+    let sanitized
+    if (description && typeof description === 'object' && (description.tr || description.en)) {
+      sanitized = {
+        tr: sanitizeHtml(description.tr || '', { allowedTags: false, allowedAttributes: false }),
+        en: sanitizeHtml(description.en || '', { allowedTags: false, allowedAttributes: false })
+      }
+    } else {
+      sanitized = sanitizeHtml(description || '', { allowedTags: false, allowedAttributes: false })
+    }
+    
     try {
       const cheatsheet = await Cheatsheet.create({ title, description: sanitized, tags, links, category })
       return res.status(201).json({ cheatsheet })

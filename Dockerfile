@@ -26,8 +26,11 @@ ENV MONGODB_DB=cybersheet
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 
-# Copy build output and public assets
-    COPY --from=builder /app/.next ./.next
+# Copy build output, public assets, scripts, and models
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/scripts ./scripts
+COPY --from=builder /app/models ./models
+COPY --from=builder /app/lib ./lib
 
 EXPOSE 3311
 CMD ["npm", "run", "start"]

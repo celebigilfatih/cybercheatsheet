@@ -1,9 +1,13 @@
 import '../styles/globals.css'
 import { useEffect, useState } from 'react'
 import { getToken, clearToken } from '../lib/client'
+import LanguageSwitcher from '../components/LanguageSwitcher'
+import { LanguageProvider, useLanguage } from '../lib/LanguageContext'
+import Link from 'next/link'
 
-export default function App({ Component, pageProps }) {
+function AppContent({ Component, pageProps }) {
   const [dark, setDark] = useState(true)
+  const { t } = useLanguage()
 
   useEffect(() => {
     const saved = localStorage.getItem('theme')
@@ -21,7 +25,7 @@ export default function App({ Component, pageProps }) {
 
   const logout = () => {
     clearToken()
-    alert('Logged out')
+    alert(t('header.logout'))
   }
 
   return (
@@ -29,18 +33,29 @@ export default function App({ Component, pageProps }) {
       <header className="sticky top-0 z-50 border-b border-gray-800 bg-cyber-panel">
         <div className="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <span className="text-cyber-accent font-semibold">CyberSec Cheatsheet</span>
-            <span className="text-xs text-gray-400">Organize your security docs</span>
+            <Link href="/" className="text-cyber-accent font-semibold hover:opacity-80 cursor-pointer transition">
+              {t('header.title')}
+            </Link>
+            <span className="text-xs text-gray-400">{t('header.subtitle')}</span>
           </div>
           <div className="flex items-center gap-2">
-            <a href="/categories" className="btn-secondary">Categories</a>
-            <a href="/login" className="btn-secondary">Login</a>
-            <button onClick={logout} className="btn-secondary">Logout</button>
-            <button onClick={toggle} className="btn-secondary">{dark ? 'Light' : 'Dark'} Mode</button>
+            <a href="/categories" className="btn-secondary">{t('header.categories')}</a>
+            <a href="/login" className="btn-secondary">{t('header.login')}</a>
+            <button onClick={logout} className="btn-secondary">{t('header.logout')}</button>
+            <button onClick={toggle} className="btn-secondary">{dark ? t('header.lightMode') : t('header.darkMode')}</button>
+            <LanguageSwitcher />
           </div>
         </div>
       </header>
       <Component {...pageProps} />
     </div>
+  )
+}
+
+export default function App({ Component, pageProps }) {
+  return (
+    <LanguageProvider>
+      <AppContent Component={Component} pageProps={pageProps} />
+    </LanguageProvider>
   )
 }

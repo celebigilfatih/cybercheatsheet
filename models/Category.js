@@ -2,8 +2,14 @@ import mongoose from 'mongoose'
 
 const CategorySchema = new mongoose.Schema(
   {
-    name: { type: String, required: true, unique: true, trim: true },
-    description: { type: String, default: '' }
+    name: {
+      tr: { type: String, required: true, trim: true },
+      en: { type: String, required: true, trim: true }
+    },
+    description: {
+      tr: { type: String, default: '' },
+      en: { type: String, default: '' }
+    }
   },
   { timestamps: true }
 )

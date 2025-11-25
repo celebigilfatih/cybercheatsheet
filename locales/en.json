@@ -1,0 +1,82 @@
+{
+  "header": {
+    "title": "CyberSec Cheatsheet",
+    "subtitle": "Organize your security docs",
+    "categories": "Categories",
+    "login": "Login",
+    "logout": "Logout",
+    "lightMode": "Light Mode",
+    "darkMode": "Dark Mode"
+  },
+  "sidebar": {
+    "categories": "Categories",
+    "manage": "Manage",
+    "new": "New",
+    "all": "All"
+  },
+  "search": {
+    "searchPlaceholder": "Search title, tags, content",
+    "filterByTag": "Filter by tag",
+    "search": "Search",
+    "newCheatsheet": "New Cheatsheet",
+    "loading": "Loading...",
+    "noResults": "No cheatsheets found. Try creating one."
+  },
+  "cheatsheet": {
+    "exportMD": "Export MD",
+    "exportPDF": "Export PDF",
+    "edit": "Edit",
+    "delete": "Delete",
+    "deleteConfirm": "Delete this cheatsheet?",
+    "updated": "Updated",
+    "links": "Links",
+    "notFound": "Not found",
+    "copy": "Copy",
+    "copied": "Copied!"
+  },
+  "categories": {
+    "manage": "Manage Categories",
+    "name": "Name",
+    "description": "Description",
+    "addCategory": "Add Category",
+    "existing": "Existing Categories",
+    "noCategories": "No categories yet.",
+    "deleteConfirm": "Delete this category?"
+  },
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add"
+  },
+  "newCheatsheet": {
+    "title": "New Cheatsheet",
+    "titlePlaceholder": "Title",
+    "selectCategory": "Select Category",
+    "tagsPlaceholder": "Tags (comma-separated)",
+    "linksPlaceholder": "Links (comma-separated URLs)",
+    "templateLabel": "Add template",
+    "selectTemplate": "Select template",
+    "addTemplate": "Add (Append)",
+    "replaceTemplate": "Replace (All)",
+    "saving": "Saving...",
+    "saveCheatsheet": "Save Cheatsheet"
+  },
+  "editCheatsheet": {
+    "title": "Edit Cheatsheet",
+    "saveChanges": "Save Changes"
+  },
+  "login": {
+    "title": "Login",
+    "username": "Username",
+    "password": "Password",
+    "loggingIn": "Logging in...",
+    "login": "Login",
+    "logout": "Logout",
+    "authDisabled": "Authentication is disabled. You can use the app without login.",
+    "loginFailed": "Login failed",
+    "loggedOut": "Logged out. Token cleared."
+  }
+}

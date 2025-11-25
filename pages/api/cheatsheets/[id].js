@@ -22,10 +22,18 @@ export default async function handler(req, res) {
       }
     }
     const { title, description, tags, links, category } = body
-    const sanitized = sanitizeHtml(description || '', {
-      allowedTags: false,
-      allowedAttributes: false
-    })
+    
+    // Handle bilingual description {tr: "...", en: "..."} or string
+    let sanitized
+    if (description && typeof description === 'object' && (description.tr || description.en)) {
+      sanitized = {
+        tr: sanitizeHtml(description.tr || '', { allowedTags: false, allowedAttributes: false }),
+        en: sanitizeHtml(description.en || '', { allowedTags: false, allowedAttributes: false })
+      }
+    } else {
+      sanitized = sanitizeHtml(description || '', { allowedTags: false, allowedAttributes: false })
+    }
+    
     const cheatsheet = await Cheatsheet.findByIdAndUpdate(
       id,
       { title, description: sanitized, tags, links, category },

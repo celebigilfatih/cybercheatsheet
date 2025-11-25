@@ -8,7 +8,7 @@ services:
       PORT: 3311
       # App, lib/dbConnect.js içinde öncelikle MONGODB_URI'yi kullanıyor.
       # Compose içinde dahili mongo servisine bağlanmak için URI veriyoruz.
-      MONGODB_URI: mongodb://mongo:27017/cybersheet
+      MONGODB_URI: mongodb://mongo:27017/cybercheatsheet
     ports:
       - "3311:3311"
     depends_on:
@@ -24,9 +24,14 @@ services:
     ports:
       - "33017:27017"
     volumes:
-      - ./mongo-data:/data/db
+      - ./mdb:/app/mdb_data
+      - mongo-data:/data/db
     restart: unless-stopped
 
 networks:
   default:
     name: cybersheet-net
+
+volumes:
+  mongo-data:
+    driver: local

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import Sidebar from '../components/Sidebar'
 import CheatsheetCard from '../components/CheatsheetCard'
+import { useLanguage } from '../lib/LanguageContext'
 
 export default function Home() {
   const [category, setCategory] = useState(null)
@@ -8,6 +9,7 @@ export default function Home() {
   const [tag, setTag] = useState('')
   const [sheets, setSheets] = useState([])
   const [loading, setLoading] = useState(false)
+  const { t, language } = useLanguage()
 
   const load = async () => {
     setLoading(true)
@@ -26,10 +28,12 @@ export default function Home() {
   }, [category])
 
   const exportMD = (sheet) => {
-    const blob = new Blob([sheet.description || ''], { type: 'text/markdown;charset=utf-8' })
+    const content = sheet.description?.[language] || sheet.description?.tr || sheet.description || ''
+    const blob = new Blob([content], { type: 'text/markdown;charset=utf-8' })
     const a = document.createElement('a')
     a.href = URL.createObjectURL(blob)
-    a.download = `${sheet.title.replace(/\s+/g, '-')}.md`
+    const title = sheet.title?.[language] || sheet.title?.tr || sheet.title || 'cheatsheet'
+    a.download = `${title.replace(/\s+/g, '-')}.md`
     a.click()
   }
 
@@ -40,7 +44,8 @@ export default function Home() {
     temp.className = 'prose prose-invert'
     temp.style.position = 'fixed'
     temp.style.left = '-9999px'
-    temp.innerText = sheet.description || ''
+    const content = sheet.description?.[language] || sheet.description?.tr || sheet.description || ''
+    temp.innerText = content
     document.body.appendChild(temp)
     const canvas = await html2canvas(temp)
     const imgData = canvas.toDataURL('image/png')
@@ -48,7 +53,8 @@ export default function Home() {
     const pageWidth = pdf.internal.pageSize.getWidth()
     const pageHeight = pdf.internal.pageSize.getHeight()
     pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, pageHeight)
-    pdf.save(`${sheet.title.replace(/\s+/g, '-')}.pdf`)
+    const title = sheet.title?.[language] || sheet.title?.tr || sheet.title || 'cheatsheet'
+    pdf.save(`${title.replace(/\s+/g, '-')}.pdf`)
     document.body.removeChild(temp)
   }
 
@@ -61,27 +67,27 @@ export default function Home() {
             <input
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              placeholder="Search title, tags, content"
+              placeholder={t('search.placeholder')}
               className="px-3 py-2 rounded bg-gray-900 border border-gray-800"
             />
             <input
               value={tag}
               onChange={(e) => setTag(e.target.value)}
-              placeholder="Filter by tag"
+              placeholder={t('search.filterByTag')}
               className="px-3 py-2 rounded bg-gray-900 border border-gray-800"
             />
-            <button onClick={load} className="btn-primary">Search</button>
-            <a href="/new" className="btn-secondary text-center">New Cheatsheet</a>
+            <button onClick={load} className="btn-primary">{t('search.button')}</button>
+            <a href="/new" className="btn-secondary text-center">{t('search.newCheatsheet')}</a>
           </div>
         </div>
 
-        {loading && <div className="text-gray-400">Loading...</div>}
+        {loading && <div className="text-gray-400">{t('search.loading')}</div>}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {sheets.map((s) => (
             <CheatsheetCard key={s._id} sheet={s} onExportMD={exportMD} onExportPDF={exportPDF} />
           ))}
           {sheets.length === 0 && !loading && (
-            <div className="text-gray-400">No cheatsheets found. Try creating one.</div>
+            <div className="text-gray-400">{t('search.noResults')}</div>
           )}
         </div>
       </section>

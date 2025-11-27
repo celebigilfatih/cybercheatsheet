@@ -5,7 +5,8 @@ import { requireAuth } from '../../../lib/auth'
 export default async function handler(req, res) {
   await dbConnect()
   if (req.method === 'GET') {
-    const categories = await Category.find({}).sort({ name: 1 })
+    // Use lean() and sort by name.tr
+    const categories = await Category.find({}).sort({ 'name.tr': 1 }).lean()
     return res.status(200).json({ categories })
   }
   if (req.method === 'POST') {

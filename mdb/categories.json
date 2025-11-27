@@ -1,11 +1,182 @@
 [
-  {"_id":{"$oid":"6915e1cc2ee79a06a3d4bc3f"},"name":"Network Scanning","description":"Port ve servis keşfi","createdAt":{"$date":"2025-11-13T13:49:00.241Z"},"updatedAt":{"$date":"2025-11-13T13:49:00.241Z"},"__v":0},
-  {"_id":{"$oid":"6915e1cc2ee79a06a3d4bc44"},"name":"Web Enumeration","description":"Web uygulaması keşfi ve taraması","createdAt":{"$date":"2025-11-13T13:49:00.313Z"},"updatedAt":{"$date":"2025-11-13T13:49:00.313Z"},"__v":0},
-  {"_id":{"$oid":"6915e1cc2ee79a06a3d4bc47"},"name":"Directory Bruteforce","description":"Dizin ve endpoint keşfi","createdAt":{"$date":"2025-11-13T13:49:00.327Z"},"updatedAt":{"$date":"2025-11-13T13:49:00.327Z"},"__v":0},
-  {"_id":{"$oid":"6915e1cc2ee79a06a3d4bc4a"},"name":"SQL Injection","description":"SQL enjeksiyon testleri","createdAt":{"$date":"2025-11-13T13:49:00.334Z"},"updatedAt":{"$date":"2025-11-13T13:49:00.334Z"},"__v":0},
-  {"_id":{"$oid":"6915e1cc2ee79a06a3d4bc4d"},"name":"Password Cracking","description":"Parola kırma ve deneme araçları","createdAt":{"$date":"2025-11-13T13:49:00.341Z"},"updatedAt":{"$date":"2025-11-13T13:49:00.341Z"},"__v":0},
-  {"_id":{"$oid":"6915e1cc2ee79a06a3d4bc50"},"name":"Network Utilities","description":"Ağ yardımcı araçları","createdAt":{"$date":"2025-11-13T13:49:00.347Z"},"updatedAt":{"$date":"2025-11-13T13:49:00.347Z"},"__v":0},
-  {"_id":{"$oid":"6915e1cc2ee79a06a3d4bc53"},"name":"Subdomain Discovery","description":"Alt alan adı keşfi","createdAt":{"$date":"2025-11-13T13:49:00.357Z"},"updatedAt":{"$date":"2025-11-13T13:49:00.357Z"},"__v":0},
-  {"_id":{"$oid":"6915e1cc2ee79a06a3d4bc56"},"name":"Wireless","description":"Kablosuz ağ testleri","createdAt":{"$date":"2025-11-13T13:49:00.364Z"},"updatedAt":{"$date":"2025-11-13T13:49:00.364Z"},"__v":0},
-  {"_id":{"$oid":"6915e1cc2ee79a06a3d4bc59"},"name":"Exploitation","description":"Sömürü araçları ve çerçeveler","createdAt":{"$date":"2025-11-13T13:49:00.372Z"},"updatedAt":{"$date":"2025-11-13T13:49:00.372Z"},"__v":0}
+  {
+    "_id": {
+      "$oid": "6915e1cc2ee79a06a3d4bc3f"
+    },
+    "name": {
+      "tr": "Network Scanning",
+      "en": "Network Scanning"
+    },
+    "description": {
+      "tr": "Port ve servis keşfi",
+      "en": "Port ve servis keşfi"
+    },
+    "createdAt": {
+      "$date": "2025-11-13T13:49:00.241Z"
+    },
+    "updatedAt": {
+      "$date": "2025-11-13T13:49:00.241Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6915e1cc2ee79a06a3d4bc44"
+    },
+    "name": {
+      "tr": "Web Enumeration",
+      "en": "Web Enumeration"
+    },
+    "description": {
+      "tr": "Web uygulaması keşfi ve taraması",
+      "en": "Web uygulaması keşfi ve taraması"
+    },
+    "createdAt": {
+      "$date": "2025-11-13T13:49:00.313Z"
+    },
+    "updatedAt": {
+      "$date": "2025-11-13T13:49:00.313Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6915e1cc2ee79a06a3d4bc47"
+    },
+    "name": {
+      "tr": "Directory Bruteforce",
+      "en": "Directory Bruteforce"
+    },
+    "description": {
+      "tr": "Dizin ve endpoint keşfi",
+      "en": "Dizin ve endpoint keşfi"
+    },
+    "createdAt": {
+      "$date": "2025-11-13T13:49:00.327Z"
+    },
+    "updatedAt": {
+      "$date": "2025-11-13T13:49:00.327Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6915e1cc2ee79a06a3d4bc4a"
+    },
+    "name": {
+      "tr": "SQL Injection",
+      "en": "SQL Injection"
+    },
+    "description": {
+      "tr": "SQL enjeksiyon testleri",
+      "en": "SQL enjeksiyon testleri"
+    },
+    "createdAt": {
+      "$date": "2025-11-13T13:49:00.334Z"
+    },
+    "updatedAt": {
+      "$date": "2025-11-13T13:49:00.334Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6915e1cc2ee79a06a3d4bc4d"
+    },
+    "name": {
+      "tr": "Password Cracking",
+      "en": "Password Cracking"
+    },
+    "description": {
+      "tr": "Parola kırma ve deneme araçları",
+      "en": "Parola kırma ve deneme araçları"
+    },
+    "createdAt": {
+      "$date": "2025-11-13T13:49:00.341Z"
+    },
+    "updatedAt": {
+      "$date": "2025-11-13T13:49:00.341Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6915e1cc2ee79a06a3d4bc50"
+    },
+    "name": {
+      "tr": "Network Utilities",
+      "en": "Network Utilities"
+    },
+    "description": {
+      "tr": "Ağ yardımcı araçları",
+      "en": "Ağ yardımcı araçları"
+    },
+    "createdAt": {
+      "$date": "2025-11-13T13:49:00.347Z"
+    },
+    "updatedAt": {
+      "$date": "2025-11-13T13:49:00.347Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6915e1cc2ee79a06a3d4bc53"
+    },
+    "name": {
+      "tr": "Subdomain Discovery",
+      "en": "Subdomain Discovery"
+    },
+    "description": {
+      "tr": "Alt alan adı keşfi",
+      "en": "Alt alan adı keşfi"
+    },
+    "createdAt": {
+      "$date": "2025-11-13T13:49:00.357Z"
+    },
+    "updatedAt": {
+      "$date": "2025-11-13T13:49:00.357Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6915e1cc2ee79a06a3d4bc56"
+    },
+    "name": {
+      "tr": "Wireless",
+      "en": "Wireless"
+    },
+    "description": {
+      "tr": "Kablosuz ağ testleri",
+      "en": "Kablosuz ağ testleri"
+    },
+    "createdAt": {
+      "$date": "2025-11-13T13:49:00.364Z"
+    },
+    "updatedAt": {
+      "$date": "2025-11-13T13:49:00.364Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6915e1cc2ee79a06a3d4bc59"
+    },
+    "name": {
+      "tr": "Exploitation",
+      "en": "Exploitation"
+    },
+    "description": {
+      "tr": "Sömürü araçları ve çerçeveler",
+      "en": "Sömürü araçları ve çerçeveler"
+    },
+    "createdAt": {
+      "$date": "2025-11-13T13:49:00.372Z"
+    },
+    "updatedAt": {
+      "$date": "2025-11-13T13:49:00.372Z"
+    },
+    "__v": 0
+  }
 ]

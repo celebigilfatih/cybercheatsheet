@@ -6,7 +6,8 @@ const fetcher = (url) => fetch(url).then((r) => r.json())
 
 export default function Sidebar({ onSelectCategory, activeCategory }) {
   const { data, error } = useSWR('/api/categories', fetcher)
-  const categories = data?.categories || []
+  // Defensive check for categories
+  const categories = Array.isArray(data?.categories) ? data.categories : []
   const { t, language } = useLanguage()
 
   return (

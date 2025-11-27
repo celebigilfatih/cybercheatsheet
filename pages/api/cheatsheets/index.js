@@ -14,10 +14,11 @@ export default async function handler(req, res) {
     let cheatsheets = []
     if (q) {
       cheatsheets = await Cheatsheet.find({ $text: { $search: q }, ...filter })
+        .populate('category')
         .sort({ updatedAt: -1 })
         .lean()
     } else {
-      cheatsheets = await Cheatsheet.find(filter).sort({ updatedAt: -1 }).lean()
+      cheatsheets = await Cheatsheet.find(filter).populate('category').sort({ updatedAt: -1 }).lean()
     }
     return res.status(200).json({ cheatsheets })
   }

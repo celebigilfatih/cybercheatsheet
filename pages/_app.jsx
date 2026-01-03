@@ -6,26 +6,26 @@ import { LanguageProvider, useLanguage } from '../lib/LanguageContext'
 import Link from 'next/link'
 
 function AppContent({ Component, pageProps }) {
-  const [dark, setDark] = useState(true)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const { t } = useLanguage()
 
   useEffect(() => {
-    const saved = localStorage.getItem('theme')
-    const isDark = saved ? saved === 'dark' : true
-    setDark(isDark)
-    document.documentElement.classList.toggle('dark', isDark)
+    // Check login status on mount
+    setIsLoggedIn(!!getToken())
+    
+    // Listen for storage changes (logout from other tabs)
+    const handleStorageChange = () => {
+      setIsLoggedIn(!!getToken())
+    }
+    window.addEventListener('storage', handleStorageChange)
+    return () => window.removeEventListener('storage', handleStorageChange)
   }, [])
-
-  const toggle = () => {
-    const next = !dark
-    setDark(next)
-    localStorage.setItem('theme', next ? 'dark' : 'light')
-    document.documentElement.classList.toggle('dark', next)
-  }
 
   const logout = () => {
     clearToken()
-    alert(t('header.logout'))
+    setIsLoggedIn(false)
+    alert(t('header.logout') || 'Logged out successfully')
+    window.location.href = '/login'
   }
 
   return (
@@ -40,9 +40,11 @@ function AppContent({ Component, pageProps }) {
           </div>
           <div className="flex items-center gap-2">
             <a href="/categories" className="btn-secondary">{t('header.categories')}</a>
-            <a href="/login" className="btn-secondary">{t('header.login')}</a>
-            <button onClick={logout} className="btn-secondary">{t('header.logout')}</button>
-            <button onClick={toggle} className="btn-secondary">{dark ? t('header.lightMode') : t('header.darkMode')}</button>
+            {!isLoggedIn ? (
+              <a href="/login" className="btn-secondary">{t('header.login')}</a>
+            ) : (
+              <button onClick={logout} className="btn-secondary">{t('header.logout')}</button>
+            )}
             <LanguageSwitcher />
           </div>
         </div>

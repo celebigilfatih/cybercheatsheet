@@ -6,26 +6,37 @@ services:
       NODE_ENV: production
       NEXT_TELEMETRY_DISABLED: "1"
       PORT: 3311
-      # App, lib/dbConnect.js içinde öncelikle MONGODB_URI'yi kullanıyor.
-      # Compose içinde dahili mongo servisine bağlanmak için URI veriyoruz.
-      MONGODB_URI: mongodb://mongo:27017/cybercheatsheet
+      # PostgreSQL connection
+      DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/cybersheet?schema=public"
+      # JWT and admin settings
+      JWT_SECRET: "your-jwt-secret-change-me"
+      ADMIN_USER: "admin"
+      ADMIN_PASS: "admin123"
     ports:
       - "3311:3311"
     depends_on:
-      - mongo
+      postgres:
+        condition: service_healthy
     restart: unless-stopped
-    # Gizli/opsiyonel env değerlerini .env.local içinden al (varsa)
     env_file:
       - .env.local
 
-  mongo:
-    image: mongo:6
-    container_name: cybersheet-mongo
+  postgres:
+    image: postgres:16-bullseye
+    container_name: cybersheet-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: cybersheet
     ports:
-      - "33017:27017"
+      - "5432:5432"
     volumes:
-      - ./mdb:/app/mdb_data
-      - mongo-data:/data/db
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     restart: unless-stopped
 
 networks:
@@ -33,5 +44,5 @@ networks:
     name: cybersheet-net
 
 volumes:
-  mongo-data:
+  postgres-data:
     driver: local

@@ -20,18 +20,24 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3311
-ENV MONGODB_HOST=host.docker.internal
-ENV MONGODB_PORT=33017
-ENV MONGODB_DB=cybersheet
+# PostgreSQL connection settings
+ENV DATABASE_URL="postgresql://postgres:postgres@postgres:5432/cybersheet?schema=public"
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 
-# Copy build output, public assets, scripts, and models
+# Copy build output, public assets, scripts, prisma, and mdb
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/scripts ./scripts
-COPY --from=builder /app/models ./models
 COPY --from=builder /app/lib ./lib
 COPY --from=builder /app/mdb ./mdb
+COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/public ./public
+
+# Install PostgreSQL client for health checks
+RUN apt-get update && apt-get install -y postgresql-client && rm -rf /var/lib/apt/lists/*
+
+# Make entrypoint script executable
+RUN chmod +x /app/scripts/docker-entrypoint.sh
 
 EXPOSE 3311
-CMD ["npm", "run", "start"]
+ENTRYPOINT ["/app/scripts/docker-entrypoint.sh"]

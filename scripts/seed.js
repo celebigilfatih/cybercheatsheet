@@ -278,7 +278,11 @@ amap -b 192.168.1.10 1-1024
       if (fs.existsSync(categoriesPath)) {
         const data = JSON.parse(fs.readFileSync(categoriesPath, 'utf-8'))
         if (Array.isArray(data)) {
-          categories = data
+          categories = data.map(cat => ({
+            ...cat,
+            createdAt: cat.createdAt && cat.createdAt.$date ? new Date(cat.createdAt.$date) : new Date(),
+            updatedAt: cat.updatedAt && cat.updatedAt.$date ? new Date(cat.updatedAt.$date) : new Date()
+          }))
         }
         console.log(`Loaded categories.json: ${categories.length} categories`)
       }
@@ -291,7 +295,11 @@ amap -b 192.168.1.10 1-1024
       if (fs.existsSync(cheatsheetsPath)) {
         const data = JSON.parse(fs.readFileSync(cheatsheetsPath, 'utf-8'))
         if (Array.isArray(data)) {
-          sheets = data
+          sheets = data.map(sheet => ({
+            ...sheet,
+            createdAt: sheet.createdAt && sheet.createdAt.$date ? new Date(sheet.createdAt.$date) : new Date(),
+            updatedAt: sheet.updatedAt && sheet.updatedAt.$date ? new Date(sheet.updatedAt.$date) : new Date()
+          }))
         }
         console.log(`Loaded cheatsheets.json: ${sheets.length} cheatsheets`)
       }

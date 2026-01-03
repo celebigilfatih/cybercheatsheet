@@ -1,51 +1,79 @@
-import dbConnect from '../../../lib/dbConnect'
-import Cheatsheet from '../../../models/Cheatsheet'
+import prisma from '../../../lib/prisma'
+import { withAdminAuth } from '../../../lib/middleware'
 import sanitizeHtml from 'sanitize-html'
-import { requireAuth } from '../../../lib/auth'
 
-export default async function handler(req, res) {
-  await dbConnect()
+async function handler(req, res) {
   if (req.method === 'GET') {
     const { q, category, tag } = req.query
-    const filter = {}
-    if (category) filter.category = category
-    if (tag) filter.tags = { $in: [tag] }
+    const where = {}
+    if (category) where.categoryId = parseInt(category, 10)
+    if (tag) where.tags = { hasSome: [tag] }
 
-    let cheatsheets = []
-    if (q) {
-      cheatsheets = await Cheatsheet.find({ $text: { $search: q }, ...filter })
-        .populate('category')
-        .sort({ updatedAt: -1 })
-        .lean()
-    } else {
-      cheatsheets = await Cheatsheet.find(filter).populate('category').sort({ updatedAt: -1 }).lean()
+    try {
+      let cheatsheets = []
+      if (q) {
+        // Simple text search across title and description fields
+        cheatsheets = await prisma.cheatsheet.findMany({
+          where: {
+            ...where,
+            OR: [
+              { titleEn: { contains: q, mode: 'insensitive' } },
+              { titleTr: { contains: q, mode: 'insensitive' } },
+              { descEn: { contains: q, mode: 'insensitive' } },
+              { descTr: { contains: q, mode: 'insensitive' } }
+            ]
+          },
+          include: { category: true },
+          orderBy: { updatedAt: 'desc' }
+        })
+      } else {
+        cheatsheets = await prisma.cheatsheet.findMany({
+          where,
+          include: { category: true },
+          orderBy: { updatedAt: 'desc' }
+        })
+      }
+      return res.status(200).json({ cheatsheets })
+    } catch (error) {
+      console.error('Error fetching cheatsheets:', error)
+      return res.status(500).json({ error: 'Internal server error' })
     }
-    return res.status(200).json({ cheatsheets })
   }
 
   if (req.method === 'POST') {
-    if (!requireAuth(req, res)) return
-    const { title, description, tags = [], links = [], category } = req.body || {}
-    if (!title || !category) return res.status(400).json({ error: 'Title and category are required' })
-    
-    // Handle bilingual description {tr: "...", en: "..."} or string
-    let sanitized
-    if (description && typeof description === 'object' && (description.tr || description.en)) {
-      sanitized = {
-        tr: sanitizeHtml(description.tr || '', { allowedTags: false, allowedAttributes: false }),
-        en: sanitizeHtml(description.en || '', { allowedTags: false, allowedAttributes: false })
-      }
-    } else {
-      sanitized = sanitizeHtml(description || '', { allowedTags: false, allowedAttributes: false })
-    }
-    
-    try {
-      const cheatsheet = await Cheatsheet.create({ title, description: sanitized, tags, links, category })
-      return res.status(201).json({ cheatsheet })
-    } catch (e) {
-      return res.status(400).json({ error: e.message })
-    }
+    return withAdminAuth(createCheatsheet)(req, res)
   }
 
   return res.status(405).json({ error: 'Method not allowed' })
 }
+
+async function createCheatsheet(req, res) {
+  const { titleEn, titleTr, descriptionEn, descriptionTr, tags = [], links = [], categoryId } = req.body || {}
+  if (!titleEn || !titleTr || !categoryId) {
+    return res.status(400).json({ error: 'Title (en/tr) and category are required' })
+  }
+  
+  try {
+    const sanitizedDescEn = sanitizeHtml(descriptionEn || '', { allowedTags: false, allowedAttributes: false })
+    const sanitizedDescTr = sanitizeHtml(descriptionTr || '', { allowedTags: false, allowedAttributes: false })
+    
+    const cheatsheet = await prisma.cheatsheet.create({
+      data: {
+        titleEn,
+        titleTr,
+        descEn: sanitizedDescEn,
+        descTr: sanitizedDescTr,
+        tags,
+        links,
+        categoryId: parseInt(categoryId, 10)
+      },
+      include: { category: true }
+    })
+    return res.status(201).json({ cheatsheet })
+  } catch (error) {
+    console.error('Error creating cheatsheet:', error)
+    return res.status(400).json({ error: error.message })
+  }
+}
+
+export default handler

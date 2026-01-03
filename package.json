@@ -8,9 +8,14 @@
     "build": "next build",
     "start": "next start -p $PORT",
     "seed": "node scripts/seed.js",
-    "migrate:i18n": "node scripts/migrate-i18n.js"
+    "migrate:i18n": "node scripts/migrate-i18n.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:push": "prisma db push",
+    "migrate:postgres": "node scripts/migrate-to-postgres.js"
   },
   "dependencies": {
+    "@prisma/client": "^5.7.1",
     "@uiw/react-markdown-preview": "^4.0.5",
     "@uiw/react-md-editor": "^4.0.5",
     "bcryptjs": "^2.4.3",
@@ -36,6 +41,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.53.1",
+    "prisma": "^5.7.1",
     "@tailwindcss/typography": "^0.5.13",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.47",

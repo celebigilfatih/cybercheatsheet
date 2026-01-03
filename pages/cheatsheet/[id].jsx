@@ -58,11 +58,13 @@ export default function CheatsheetDetail() {
   }
 
   const exportMD = () => {
-    const content = sheet?.description?.[language] || sheet?.description?.tr || sheet?.description || ''
+    const content = language === 'en' 
+      ? (sheet?.descEn || sheet?.description?.[language] || sheet?.description?.tr || sheet?.description || '')
+      : (sheet?.descTr || sheet?.description?.[language] || sheet?.description?.tr || sheet?.description || '')
     const blob = new Blob([content], { type: 'text/markdown;charset=utf-8' })
     const a = document.createElement('a')
     a.href = URL.createObjectURL(blob)
-    const title = sheet?.title?.[language] || sheet?.title?.tr || sheet?.title || 'cheatsheet'
+    const title = sheet?.titleEn || sheet?.title?.[language] || sheet?.title?.tr || sheet?.title || 'cheatsheet'
     a.download = `${title.replace(/\s+/g, '-')}.md`
     a.click()
   }
@@ -83,14 +85,19 @@ export default function CheatsheetDetail() {
   if (loading) return <main className="p-6">{t('detail.loading')}</main>
   if (!sheet) return <main className="p-6">{t('detail.notFound')}</main>
 
+  const displayTitle = sheet.titleEn || sheet.title?.[language] || sheet.title?.tr || sheet.title
+  const displayContent = language === 'en' 
+    ? (sheet.descEn || sheet.description?.[language] || sheet.description?.tr || sheet.description || '')
+    : (sheet.descTr || sheet.description?.[language] || sheet.description?.tr || sheet.description || '')
+
   return (
     <main className="mx-auto max-w-5xl p-6 space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">{sheet.title?.[language] || sheet.title?.tr || sheet.title}</h1>
+        <h1 className="text-2xl font-semibold">{displayTitle}</h1>
         <div className="flex gap-2">
           <button onClick={exportMD} className="btn-secondary">{t('detail.exportMD')}</button>
           <button onClick={exportPDF} className="btn-primary">{t('detail.exportPDF')}</button>
-          <a href={`/cheatsheet/${sheet._id}/edit`} className="btn-secondary">{t('detail.edit')}</a>
+          <a href={`/cheatsheet/${sheet.id || sheet._id}/edit`} className="btn-secondary">{t('detail.edit')}</a>
           <button onClick={remove} className="btn-secondary">{t('detail.delete')}</button>
         </div>
       </div>
@@ -119,7 +126,7 @@ export default function CheatsheetDetail() {
               }
             }}
           >
-            {sheet.description?.[language] || sheet.description?.tr || sheet.description || ''}
+            {displayContent}
           </ReactMarkdown>
         )}
       </div>

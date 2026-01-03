@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react'
-import MarkdownEditor from '../../../components/MarkdownEditor'
 import { authFetch } from '../../../lib/client'
 
 export default function EditCheatsheet() {
   const [sheet, setSheet] = useState(null)
-  const [title, setTitle] = useState('')
-  const [description, setDescription] = useState('')
+  const [titleEn, setTitleEn] = useState('')
+  const [titleTr, setTitleTr] = useState('')
+  const [descEn, setDescEn] = useState('')
+  const [descTr, setDescTr] = useState('')
   const [tags, setTags] = useState('')
   const [links, setLinks] = useState('')
-  const [category, setCategory] = useState('')
+  const [categoryId, setCategoryId] = useState('')
   const [categories, setCategories] = useState([])
   const [saving, setSaving] = useState(false)
 
@@ -17,11 +18,13 @@ export default function EditCheatsheet() {
     fetch(`/api/cheatsheets/${id}`).then((r) => r.json()).then((d) => {
       const s = d.cheatsheet
       setSheet(s)
-      setTitle(s.title)
-      setDescription(s.description || '')
+      setTitleEn(s.titleEn || '')
+      setTitleTr(s.titleTr || '')
+      setDescEn(s.descEn || '')
+      setDescTr(s.descTr || '')
       setTags((s.tags || []).join(', '))
       setLinks((s.links || []).join(', '))
-      setCategory(s.category || '')
+      setCategoryId(s.categoryId || '')
     })
     fetch('/api/categories').then((r) => r.json()).then((d) => setCategories(d.categories || []))
   }, [])
@@ -29,21 +32,23 @@ export default function EditCheatsheet() {
   const save = async () => {
     if (!sheet) return
     setSaving(true)
-    const res = await authFetch(`/api/cheatsheets/${sheet._id}`, {
+    const res = await authFetch(`/api/cheatsheets/${sheet.id || sheet._id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        title,
-        description,
+        titleEn,
+        titleTr,
+        descriptionEn: descEn,
+        descriptionTr: descTr,
         tags: tags.split(',').map((t) => t.trim()).filter(Boolean),
         links: links.split(',').map((l) => l.trim()).filter(Boolean),
-        category
+        categoryId: parseInt(categoryId, 10)
       })
     })
     const data = await res.json()
     setSaving(false)
     if (res.ok) {
-      window.location.href = `/cheatsheet/${data.cheatsheet._id}`
+      window.location.href = `/cheatsheet/${data.cheatsheet.id || data.cheatsheet._id}`
     } else {
       alert(data.error || 'Failed to save')
     }
@@ -54,23 +59,37 @@ export default function EditCheatsheet() {
       <h1 className="text-xl font-semibold">Edit Cheatsheet</h1>
       <div className="panel p-4 grid md:grid-cols-2 gap-4">
         <div className="space-y-3">
-          <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" className="w-full px-3 py-2 rounded bg-gray-900 border border-gray-800" />
-          <select value={category} onChange={(e) => setCategory(e.target.value)} className="w-full px-3 py-2 rounded bg-gray-900 border border-gray-800">
+          <div>
+            <label className="text-xs text-gray-400">Title (English)</label>
+            <input value={titleEn} onChange={(e) => setTitleEn(e.target.value)} placeholder="Title EN" className="w-full px-3 py-2 rounded bg-gray-900 border border-gray-800" />
+          </div>
+          <div>
+            <label className="text-xs text-gray-400">Title (Turkish)</label>
+            <input value={titleTr} onChange={(e) => setTitleTr(e.target.value)} placeholder="Title TR" className="w-full px-3 py-2 rounded bg-gray-900 border border-gray-800" />
+          </div>
+          <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)} className="w-full px-3 py-2 rounded bg-gray-900 border border-gray-800">
             <option value="">Select Category</option>
             {categories.map((c) => (
-              <option key={c._id} value={c._id}>{c.name}</option>
+              <option key={c.id || c._id} value={c.id || c._id}>{c.nameEn || c.name}</option>
             ))}
           </select>
           <input value={tags} onChange={(e) => setTags(e.target.value)} placeholder="Tags (comma-separated)" className="w-full px-3 py-2 rounded bg-gray-900 border border-gray-800" />
           <input value={links} onChange={(e) => setLinks(e.target.value)} placeholder="Links (comma-separated URLs)" className="w-full px-3 py-2 rounded bg-gray-900 border border-gray-800" />
         </div>
-        <div>
-          <MarkdownEditor value={description} onChange={setDescription} />
+        <div className="space-y-3">
+          <div>
+            <label className="text-xs text-gray-400">Description (English)</label>
+            <textarea value={descEn} onChange={(e) => setDescEn(e.target.value)} placeholder="Description EN" rows="10" className="w-full px-3 py-2 rounded bg-gray-900 border border-gray-800 font-mono text-sm" />
+          </div>
+          <div>
+            <label className="text-xs text-gray-400">Description (Turkish)</label>
+            <textarea value={descTr} onChange={(e) => setDescTr(e.target.value)} placeholder="Description TR" rows="10" className="w-full px-3 py-2 rounded bg-gray-900 border border-gray-800 font-mono text-sm" />
+          </div>
         </div>
       </div>
       <div className="flex gap-2">
         <button onClick={save} className="btn-primary" disabled={saving}>{saving ? 'Saving...' : 'Save Changes'}</button>
-        <a href={`/cheatsheet/${sheet?._id || ''}`} className="btn-secondary">Cancel</a>
+        <a href={`/cheatsheet/${sheet?.id || sheet?._id || ''}`} className="btn-secondary">Cancel</a>
       </div>
     </main>
   )

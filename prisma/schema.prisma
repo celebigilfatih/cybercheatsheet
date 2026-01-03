@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model for authentication
+model User {
+  id        Int     @id @default(autoincrement())
+  username  String  @unique
+  password  String
+  isAdmin   Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Category model
+model Category {
+  id          Int    @id @default(autoincrement())
+  nameEn      String
+  nameTr      String
+  descEn      String @default("")
+  descTr      String @default("")
+  cheatsheets Cheatsheet[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([nameEn])
+  @@index([nameTr])
+}
+
+// Cheatsheet model
+model Cheatsheet {
+  id          Int     @id @default(autoincrement())
+  titleEn     String
+  titleTr     String
+  descEn      String @default("")
+  descTr      String @default("")
+  tags        String[]  @default([])
+  links       String[]  @default([])
+  categoryId  Int
+  category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([titleEn])
+  @@index([titleTr])
+  @@index([categoryId])
+}

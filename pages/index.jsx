@@ -27,12 +27,20 @@ export default function Home() {
     load()
   }, [category])
 
+  useEffect(() => {
+    // Initial load on mount
+    load()
+  }, [])
+
   const exportMD = (sheet) => {
-    const content = sheet.description?.[language] || sheet.description?.tr || sheet.description || ''
+    // Handle both PostgreSQL (descEn/descTr) and MongoDB formats (description object)
+    const content = language === 'en' 
+      ? (sheet.descEn || sheet.description?.[language] || sheet.description?.tr || sheet.description || '')
+      : (sheet.descTr || sheet.description?.[language] || sheet.description?.tr || sheet.description || '')
     const blob = new Blob([content], { type: 'text/markdown;charset=utf-8' })
     const a = document.createElement('a')
     a.href = URL.createObjectURL(blob)
-    const title = sheet.title?.[language] || sheet.title?.tr || sheet.title || 'cheatsheet'
+    const title = sheet.titleEn || sheet.title?.[language] || sheet.title?.tr || sheet.title || 'cheatsheet'
     a.download = `${title.replace(/\s+/g, '-')}.md`
     a.click()
   }
@@ -44,7 +52,10 @@ export default function Home() {
     temp.className = 'prose prose-invert'
     temp.style.position = 'fixed'
     temp.style.left = '-9999px'
-    const content = sheet.description?.[language] || sheet.description?.tr || sheet.description || ''
+    // Handle both PostgreSQL (descEn/descTr) and MongoDB formats (description object)
+    const content = language === 'en' 
+      ? (sheet.descEn || sheet.description?.[language] || sheet.description?.tr || sheet.description || '')
+      : (sheet.descTr || sheet.description?.[language] || sheet.description?.tr || sheet.description || '')
     temp.innerText = content
     document.body.appendChild(temp)
     const canvas = await html2canvas(temp)
@@ -53,7 +64,7 @@ export default function Home() {
     const pageWidth = pdf.internal.pageSize.getWidth()
     const pageHeight = pdf.internal.pageSize.getHeight()
     pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, pageHeight)
-    const title = sheet.title?.[language] || sheet.title?.tr || sheet.title || 'cheatsheet'
+    const title = sheet.titleEn || sheet.title?.[language] || sheet.title?.tr || sheet.title || 'cheatsheet'
     pdf.save(`${title.replace(/\s+/g, '-')}.pdf`)
     document.body.removeChild(temp)
   }
@@ -63,7 +74,7 @@ export default function Home() {
       <Sidebar onSelectCategory={setCategory} activeCategory={category} />
       <section className="p-6">
         <div className="panel p-4 mb-4">
-          <div className="grid md:grid-cols-4 gap-3">
+          <div className="grid md:grid-cols-3 gap-3">
             <input
               value={q}
               onChange={(e) => setQ(e.target.value)}
@@ -77,14 +88,13 @@ export default function Home() {
               className="px-3 py-2 rounded bg-gray-900 border border-gray-800"
             />
             <button onClick={load} className="btn-primary">{t('search.button')}</button>
-            <a href="/new" className="btn-secondary text-center">{t('search.newCheatsheet')}</a>
           </div>
         </div>
 
         {loading && <div className="text-gray-400">{t('search.loading')}</div>}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {sheets.map((s) => (
-            <CheatsheetCard key={s._id} sheet={s} onExportMD={exportMD} onExportPDF={exportPDF} />
+            <CheatsheetCard key={s.id || s._id} sheet={s} onExportMD={exportMD} onExportPDF={exportPDF} />
           ))}
           {sheets.length === 0 && !loading && (
             <div className="text-gray-400">{t('search.noResults')}</div>

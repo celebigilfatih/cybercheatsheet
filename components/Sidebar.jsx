@@ -29,12 +29,12 @@ export default function Sidebar({ onSelectCategory, activeCategory }) {
           </button>
         </li>
         {categories.map((c) => (
-          <li key={c._id}>
+          <li key={c.id || c._id}>
             <button
-              className={`w-full text-left px-2 py-2 rounded hover:bg-gray-800 ${activeCategory === c._id ? 'bg-gray-800' : ''}`}
-              onClick={() => onSelectCategory(c._id)}
+              className={`w-full text-left px-2 py-2 rounded hover:bg-gray-800 ${activeCategory === (c.id || c._id) ? 'bg-gray-800' : ''}`}
+              onClick={() => onSelectCategory(c.id || c._id)}
             >
-              {c.name?.[language] || c.name?.tr || c.name}
+              {c.nameEn || c.name?.[language] || c.name?.tr || c.name}
             </button>
           </li>
         ))}

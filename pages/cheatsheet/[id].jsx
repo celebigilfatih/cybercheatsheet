@@ -8,12 +8,17 @@ import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import Mermaid from '../../components/Mermaid'
 import { useLanguage } from '../../lib/LanguageContext'
 
+import { getToken } from '../../lib/client'
+
 export default function CheatsheetDetail() {
   const [sheet, setSheet] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const { t, language } = useLanguage()
 
   useEffect(() => {
+    const token = getToken()
+    setIsLoggedIn(!!token)
     const id = window.location.pathname.split('/').pop()
     fetch(`/api/cheatsheets/${id}`).then((r) => r.json()).then((d) => {
       setSheet(d.cheatsheet)
@@ -93,12 +98,16 @@ export default function CheatsheetDetail() {
   return (
     <main className="mx-auto max-w-5xl p-6 space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">{displayTitle}</h1>
+        <h1 className="text-4xl font-bold">{displayTitle}</h1>
         <div className="flex gap-2">
           <button onClick={exportMD} className="btn-secondary">{t('detail.exportMD')}</button>
           <button onClick={exportPDF} className="btn-primary">{t('detail.exportPDF')}</button>
-          <a href={`/cheatsheet/${sheet.id || sheet._id}/edit`} className="btn-secondary">{t('detail.edit')}</a>
-          <button onClick={remove} className="btn-secondary">{t('detail.delete')}</button>
+          {isLoggedIn && (
+            <>
+              <a href={`/cheatsheet/${sheet.id || sheet._id}/edit`} className="btn-secondary">{t('detail.edit')}</a>
+              <button onClick={remove} className="btn-secondary">{t('detail.delete')}</button>
+            </>
+          )}
         </div>
       </div>
       <div className="mt-2">

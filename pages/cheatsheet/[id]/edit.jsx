@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { authFetch } from '../../../lib/client'
+import { authFetch, getToken } from '../../../lib/client'
 
 export default function EditCheatsheet() {
   const [sheet, setSheet] = useState(null)
@@ -14,6 +14,10 @@ export default function EditCheatsheet() {
   const [saving, setSaving] = useState(false)
 
   useEffect(() => {
+    if (!getToken()) {
+      window.location.href = '/login'
+      return
+    }
     const id = window.location.pathname.split('/').slice(-2, -1)[0]
     fetch(`/api/cheatsheets/${id}`).then((r) => r.json()).then((d) => {
       const s = d.cheatsheet
@@ -56,7 +60,7 @@ export default function EditCheatsheet() {
 
   return (
     <main className="mx-auto max-w-5xl p-6 space-y-4">
-      <h1 className="text-xl font-semibold">Edit Cheatsheet</h1>
+      <h1 className="text-3xl font-bold mb-4">Edit Cheatsheet</h1>
       <div className="panel p-4 grid md:grid-cols-2 gap-4">
         <div className="space-y-3">
           <div>

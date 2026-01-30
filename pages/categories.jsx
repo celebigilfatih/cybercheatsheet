@@ -85,7 +85,7 @@ export default function Categories() {
   if (!isLoggedIn) {
     return (
       <main className="mx-auto max-w-5xl p-6 space-y-4">
-        <h1 className="text-xl font-semibold">Manage Categories</h1>
+        <h1 className="text-3xl font-bold mb-4">Manage Categories</h1>
         <div className="panel p-4 bg-yellow-900 text-yellow-200">
           <p>You need to be logged in to manage categories.</p>
           <Link href="/login" className="btn-primary mt-4 inline-block">
@@ -98,7 +98,7 @@ export default function Categories() {
 
   return (
     <main className="mx-auto max-w-5xl p-6 space-y-4">
-      <h1 className="text-xl font-semibold">Manage Categories</h1>
+      <h1 className="text-3xl font-bold mb-4">Manage Categories</h1>
       <div className="panel p-4 grid md:grid-cols-2 gap-4">
         <div className="space-y-3">
           <input

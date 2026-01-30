@@ -31,7 +31,7 @@ function AppContent({ Component, pageProps }) {
   return (
     <div className="min-h-screen">
       <header className="sticky top-0 z-50 border-b border-gray-800 bg-cyber-panel">
-        <div className="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
+        <div className="mx-auto max-w-full px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link href="/" className="text-cyber-accent font-semibold hover:opacity-80 cursor-pointer transition">
               {t('header.title')}

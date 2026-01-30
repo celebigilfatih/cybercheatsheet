@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import MarkdownEditor from '../components/MarkdownEditor'
 import { TEMPLATE_OPTIONS, getTemplate } from '../lib/templates'
-import { authFetch } from '../lib/client'
+import { authFetch, getToken } from '../lib/client'
 import { useLanguage } from '../lib/LanguageContext'
 
 export default function NewCheatsheet() {
@@ -18,6 +18,10 @@ export default function NewCheatsheet() {
   const { t, language } = useLanguage()
 
   useEffect(() => {
+    if (!getToken()) {
+      window.location.href = '/login'
+      return
+    }
     fetch('/api/categories').then((r) => r.json()).then((d) => setCategories(d.categories || []))
   }, [])
 
@@ -45,7 +49,7 @@ export default function NewCheatsheet() {
 
   return (
     <main className="mx-auto max-w-5xl p-6 space-y-4">
-      <h1 className="text-xl font-semibold">{t('new.title')}</h1>
+      <h1 className="text-3xl font-bold mb-4">{t('new.title')}</h1>
       <div className="panel p-4 space-y-4">
         <div className="grid md:grid-cols-2 gap-4">
           <div className="space-y-2">

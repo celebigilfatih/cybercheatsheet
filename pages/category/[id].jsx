@@ -42,7 +42,7 @@ export default function CategoryPage() {
 
   return (
     <main className="mx-auto max-w-7xl p-6">
-      <h1 className="text-xl font-semibold mb-4">Category</h1>
+      <h1 className="text-3xl font-bold mb-4">{t('sidebar.categories')}</h1>
       {loading && <div className="text-gray-400">Loading...</div>}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         {sheets.map((s) => (

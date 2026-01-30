@@ -821,8 +821,10 @@ nmap -oA results 192.168.1.1     # Sonuçları dışa aktar
 async function mergeAndUpdateNmap() {
   try {
     const cheatsheet = await prisma.cheatsheet.update({
-      where: { id: 235 },
+      where: { id: 264 },
       data: {
+        titleEn: 'Nmap - Network Mapper: Complete Training Guide',
+        titleTr: 'Nmap - Network Mapper: Kapsamlı Eğitim Rehberi',
         descEn: NMAP_COMPLETE_EN,
         descTr: NMAP_COMPLETE_TR,
         tags: [

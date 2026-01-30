@@ -2,20 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Root Layout */
 html, body, #__next {
   height: 100%;
 }
 
 body {
   @apply bg-cyber-bg text-gray-100;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
+/* Minimal Panel */
 .panel {
-  @apply bg-cyber-panel rounded-lg border border-gray-800 shadow;
+  @apply bg-cyber-panel/80 rounded-lg border border-gray-800/50;
 }
 
+/* Minimal Buttons */
 .btn {
-  @apply inline-flex items-center px-3 py-2 rounded-md font-medium transition;
+  @apply inline-flex items-center justify-center px-3 py-1.5 rounded-md text-sm font-medium transition-colors;
 }
 
 .btn-primary {
@@ -23,18 +27,139 @@ body {
 }
 
 .btn-secondary {
-  @apply btn bg-gray-800 text-gray-100 hover:bg-gray-700;
+  @apply btn bg-gray-800/80 text-gray-200 hover:bg-gray-700 border border-gray-700/50;
 }
 
+/* Minimal Tags */
 .tag {
-  @apply inline-flex items-center px-2 py-1 text-xs rounded bg-gray-800 text-gray-200 mr-1 mb-1;
+  @apply inline-flex items-center px-1.5 py-0.5 text-[10px] rounded bg-gray-800/60 text-gray-400;
 }
 
-/* Section color coding for core parts (uses remark-slug ids) */
-h2#temel-komutlar-ve-sozdizimi { border-left: 4px solid #60a5fa; padding-left: 0.5rem; }
-h2#sik-kullanilan-ornekler-ve-kullanim-durumlari { border-left: 4px solid #34d399; padding-left: 0.5rem; }
-h2#ileri-duzey-teknikler-ve-ipuclari { border-left: 4px solid #f59e0b; padding-left: 0.5rem; }
-h2#sorun-giderme-rehberi-ve-hata-cozumleri { border-left: 4px solid #ef4444; padding-left: 0.5rem; }
+/* Custom Scrollbar - Minimal */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
 
-/* Mermaid diagrams responsive */
-.mermaid-diagram svg { max-width: 100%; height: auto; }
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-700/50 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-600/60;
+}
+
+/* Form Inputs - Minimal */
+input, textarea, select {
+  @apply text-gray-100 placeholder-gray-500;
+}
+
+input:focus, textarea:focus, select:focus {
+  @apply outline-none ring-1 ring-cyber-accent/30;
+}
+
+/* Line Clamp Utility */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Section Headers */
+h2#temel-komutlar-ve-sozdizimi { 
+  border-left: 2px solid #60a5fa; 
+  padding-left: 0.5rem; 
+}
+
+h2#sik-kullanilan-ornekler-ve-kullanim-durumlari { 
+  border-left: 2px solid #34d399; 
+  padding-left: 0.5rem; 
+}
+
+h2#ileri-duzey-teknikler-ve-ipuclari { 
+  border-left: 2px solid #f59e0b; 
+  padding-left: 0.5rem; 
+}
+
+h2#sorun-giderme-rehberi-ve-hata-cozumleri { 
+  border-left: 2px solid #ef4444; 
+  padding-left: 0.5rem; 
+}
+
+/* Mermaid Diagrams */
+.mermaid-diagram svg { 
+  max-width: 100%; 
+  height: auto; 
+}
+
+/* Prose Overrides for Dark Theme */
+.prose {
+  @apply text-gray-200;
+}
+
+.prose h1, .prose h2, .prose h3, .prose h4 {
+  @apply text-gray-100 font-semibold;
+}
+
+.prose a {
+  @apply text-cyber-accent hover:text-cyber-accent/80;
+}
+
+.prose code {
+  @apply bg-gray-800/80 text-cyber-accent px-1 py-0.5 rounded text-sm;
+}
+
+.prose pre {
+  @apply bg-gray-900/80 border border-gray-800/50 rounded-lg;
+}
+
+.prose pre code {
+  @apply bg-transparent px-0 py-0;
+}
+
+.prose blockquote {
+  @apply border-l-2 border-cyber-accent/50 text-gray-400 italic;
+}
+
+.prose table {
+  @apply border-collapse w-full;
+}
+
+.prose th {
+  @apply bg-gray-800/50 text-gray-200 font-medium text-left px-3 py-2 border border-gray-700/50;
+}
+
+.prose td {
+  @apply text-gray-300 px-3 py-2 border border-gray-800/50;
+}
+
+.prose tr:hover td {
+  @apply bg-gray-800/30;
+}
+
+/* Loading Animation */
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+.loading-pulse {
+  animation: pulse-glow 1.5s ease-in-out infinite;
+}
+
+/* Smooth Transitions */
+* {
+  transition-property: background-color, border-color, color, opacity;
+  transition-duration: 150ms;
+  transition-timing-function: ease-in-out;
+}
+
+/* Override for animations */
+.animate-spin {
+  transition: none;
+}

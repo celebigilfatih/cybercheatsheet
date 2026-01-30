@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import CheatsheetCard from '../../components/CheatsheetCard'
 
 export default function CategoryPage() {
+  const { t } = useTranslation()
   const [sheets, setSheets] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -54,4 +56,8 @@ export default function CategoryPage() {
       </div>
     </main>
   )
+}
+
+export async function getServerSideProps() {
+  return { props: {} }
 }

@@ -7,8 +7,8 @@ const securityHeaders = [
     value: [
       "default-src 'self'",
       isDev
-        ? "script-src 'self' 'unsafe-eval' 'unsafe-inline'"
-        : "script-src 'self' 'unsafe-inline'",
+        ? "script-src 'self' 'unsafe-eval' 'unsafe-inline' blob:"
+        : "script-src 'self' 'unsafe-inline' blob:",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob:",
       "font-src 'self' data:",

@@ -151,3 +151,7 @@ export default function Home() {
     </main>
   )
 }
+
+export async function getServerSideProps() {
+  return { props: {} }
+}

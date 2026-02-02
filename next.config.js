@@ -7,12 +7,12 @@ const securityHeaders = [
     value: [
       "default-src 'self'",
       isDev
-        ? "script-src 'self' 'unsafe-eval' 'unsafe-inline' blob:"
-        : "script-src 'self' 'unsafe-inline' blob:",
+        ? "script-src 'self' 'unsafe-eval' 'unsafe-inline' blob: https://infird.com"
+        : "script-src 'self' 'unsafe-inline' blob: https://infird.com",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob:",
       "font-src 'self' data:",
-      "connect-src 'self'",
+      "connect-src 'self' https://infird.com",
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "form-action 'self'",

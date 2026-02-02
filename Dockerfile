@@ -1,13 +1,13 @@
 # syntax=docker/dockerfile:1
 
 # --- deps stage: install all dependencies (for build)
-FROM node:18-bullseye-slim AS deps
+FROM node:20-bullseye-slim AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 
 # --- builder stage: build Next.js app
-FROM node:18-bullseye-slim AS builder
+FROM node:20-bullseye-slim AS builder
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 COPY --from=deps /app/node_modules ./node_modules
@@ -15,7 +15,7 @@ COPY . .
 RUN npm run build
 
 # --- runner stage: production runtime
-FROM node:18-bullseye-slim AS runner
+FROM node:20-bullseye-slim AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1

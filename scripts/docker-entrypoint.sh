@@ -7,9 +7,18 @@ echo "========================================="
 
 echo ""
 echo "Step 1: Waiting for PostgreSQL to be ready..."
-until PGPASSWORD="postgres" psql -h postgres -U postgres -d cybersheet -c "\q" 2>/dev/null; do
+
+if [ -z "$DATABASE_URL" ]; then
+  echo "ERROR: DATABASE_URL is not set"
+  exit 1
+fi
+
+PG_HOST=$(echo "$DATABASE_URL" | sed -E 's/.*@([^:/]+).*/\1/')
+echo "Connecting to PostgreSQL at $PG_HOST..."
+
+until pg_isready -h "$PG_HOST" 2>/dev/null; do
   echo "  PostgreSQL is unavailable - sleeping"
-  sleep 1
+  sleep 2
 done
 echo "✓ PostgreSQL is ready!"
 
